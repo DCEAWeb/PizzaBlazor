@@ -1,0 +1,26 @@
+﻿@page "/registrarmasa"
+<h3>RegistrarMasa</h3>
+@inject IMasa imasa
+
+@rendermode InteractiveServer
+
+<EditForm Model="masa" OnValidSubmit="Registrar">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+    <input @bind-value=masa.Nombre class="form-control" type="text" placeholder="Tipo de masa" For="@(()=> masa.Nombre)"/>
+    <br />
+    <input @bind-value=masa.Precio class="form-control" type="text" placeholder="Precio" For="@(()=> masa.Precio)" />
+    <br />
+    <button class="btn btn-primary" type="submit">Registrar</button>
+</EditForm>
+
+
+
+@code {
+    Masa masa = new Masa();
+
+    void Registrar()
+    {
+        var respuesta = imasa.Registrar(masa);
+    }
+}

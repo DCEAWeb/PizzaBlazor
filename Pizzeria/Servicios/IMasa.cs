@@ -4,7 +4,7 @@ namespace Pizzeria.Servicios
 {
     public interface IMasa
     {
-        Task<Masa> Registrar();
+        Task<Masa> Registrar(Masa masa);
 
         Task<List<Masa>> Obtener();
     }

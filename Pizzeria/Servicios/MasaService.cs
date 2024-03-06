@@ -19,9 +19,11 @@ namespace Pizzeria.Servicios
             return lista;
         }
 
-        Task<Masa> IMasa.Registrar()
+        async Task<Masa> IMasa.Registrar(Masa masa)
         {
-            throw new NotImplementedException();
+            context.Masas.Add(masa);
+            await context.SaveChangesAsync();
+            return masa;
         }
     }
 }
