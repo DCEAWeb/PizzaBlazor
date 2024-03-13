@@ -18,6 +18,7 @@ options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IMasa, MasaService>();
 builder.Services.AddScoped<ITamano, TamanoService>();
 builder.Services.AddScoped<IIngrediente, IngredienteService>();
+builder.Services.AddScoped<IOrden, OrdenServicio>();
 
 var app = builder.Build();
 

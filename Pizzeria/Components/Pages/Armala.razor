@@ -3,6 +3,7 @@
 @inject IMasa imasa
 @inject ITamano itamano
 @inject IIngrediente iingrediente
+@inject IOrden iOrden
 
 @rendermode InteractiveServer
 
@@ -53,6 +54,8 @@
                 <div class="card-body">
                     <h6>Total:</h6>
                     <p style="color:forestgreen">$ @sumaTotal</p>
+                    <input type="text" class="form-control" placeholder="Nombre del cliente" @bind-value=nombreCliente/>
+                    <button class="btn btn-primary" @onclick="()=> Ordenar(armarPizza,nombreCliente)">Ordenar</button>
                 </div>
             </div>
         </div>
@@ -68,6 +71,8 @@
     Masa masaSeleccionada = new Masa();
     List<Ingrediente> ingredientesSeleccionados = new List<Ingrediente>();
     float sumaTotal = 0.00f;
+    Pizza armarPizza = new Pizza();
+    string nombreCliente;
 
 
 
@@ -78,6 +83,7 @@
         masas = await imasa.Obtener();
         tamanos = await itamano.Obtener();
         ingredientes = await iingrediente.Obtener();
+        armarPizza.Ingredientes = new List<Ingrediente>();
         // LLenarIngredientes();
     }
 
@@ -111,6 +117,7 @@
         restar(tamanoSeleccionado.Precio);
         tamanoSeleccionado = tamanos.Where(t => t.Id == id).FirstOrDefault();
         calculoTotal(tamanoSeleccionado.Precio);
+        armarPizza.TamanoId = id;
     }
 
     void selMasa(ChangeEventArgs args)
@@ -120,6 +127,7 @@
         restar(masaSeleccionada.Precio);
         masaSeleccionada = masas.Where(t => t.Id == id).FirstOrDefault();
         calculoTotal(masaSeleccionada.Precio);
+        armarPizza.IdMasa = id;
     }
 
     void selIngredientes(Ingrediente ingrediente, object seleccionado)
@@ -128,11 +136,13 @@
         {
             ingredientesSeleccionados.Add(ingrediente);
             calculoTotal(ingrediente.Precio);
+            armarPizza.Ingredientes.Add(ingrediente);
         }
         else
         {
             ingredientesSeleccionados.Remove(ingrediente);
             restar(ingrediente.Precio);
+            armarPizza.Ingredientes.Remove(ingrediente);
         }
     }
 
@@ -140,11 +150,18 @@
     {
         sumaTotal = sumaTotal + precio;
         //sumaTotal += precio;
+        armarPizza.Precio = sumaTotal;
     }
 
     void restar(float precio)
     {
         sumaTotal = sumaTotal - precio;
         //sumaTotal -= precio;
+        armarPizza.Precio = sumaTotal;
+    }
+
+    async void Ordenar(Pizza pizza, string cliente)
+    {
+        var resultado = await iOrden.RegistrarOrden(pizza,cliente);
     }
 }

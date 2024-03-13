@@ -13,5 +13,7 @@ namespace Pizzeria.Data
         public DbSet<Masa> Masas { get; set; }
         public DbSet<Ingrediente> Ingredientes { get; set;}
         public DbSet<Pizza> Pizzas { get; set; }
+        public DbSet<Orden> Ordenes { get; set; }
+        public DbSet<OrdenIngrediente> OrdenIngredientes { get; set;}
     }
 }
